@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ana Ferreira — Fotografia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B0B0A;
+    --ink: #F2EFE9;
+    --muted: #8A867E;
+    --accent: #C9A66B;
+    --line: rgba(242,239,233,0.12);
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  header{
+    padding: 4rem 2rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+  }
+
+  header h1{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    letter-spacing: 0.01em;
+  }
+
+  header p{
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* barra de filtros */
+  .filtros{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .filtros button{
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .filtros button:hover{
+    border-color: var(--accent);
+    color: var(--ink);
+  }
+
+  .filtros button.ativo{
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+  }
+
+  .contador{
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+    padding: 0 0 1.5rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* MASONRY: colunas CSS -> cada imagem mantem sua proporcao original,
+     o navegador organiza tudo sozinho, sem precisar cortar nenhuma foto */
+  .galeria{
+    column-count: 4;
+    column-gap: 14px;
+    padding: 0 20px 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 1100px){ .galeria{ column-count: 3; } }
+  @media (max-width: 720px){ .galeria{ column-count: 2; column-gap: 10px; padding: 0 12px 3rem; } }
+  @media (max-width: 460px){ .galeria{ column-count: 1; } }
+
+  .foto{
+    break-inside: avoid;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .foto.escondida{
+    display: none;
+  }
+
+  .foto img{
+    width: 100%;
+    height: auto;   /* <- é isso que faz a foto se auto-ajustar */
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .foto:hover img{
+    transform: scale(1.03);
+  }
+
+  .foto .legenda{
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 0.6rem 0.8rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.55));
+    color: #fff;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .foto:hover .legenda{ opacity: 1; }
+
+  footer{
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Minha Princesa</h1>
+  <p>Fotografia — Feitas pela pessoa mais especial da minha vida</p>
+    <a>Fotografia — Feitas pela pessoa mais especial da minha vida</a>
+</header>
+
+<nav class="filtros">
+  <button class="ativo" data-filtro="todos">Todos</button>
+  <button data-filtro="artistico">Artístico</button>
+  <button data-filtro="gestante">Gestante</button>
+  <button data-filtro="casal">Casal</button>
+  <button data-filtro="profissional">Profissional</button>
+</nav>
+
+<p class="contador" id="contador">Mostrando 12 fotos</p>
+
+<main class="galeria" id="galeria">
+  <!-- as fotos são inseridas via JavaScript a partir da lista "fotos" abaixo -->
+</main>
+
+<footer>© 2026 Ana Ferreira Fotografia</footer>
+
+<script>
+  /*
+    Cada foto tem uma "pasta" (categoria) e uma url.
+    Na prática, em vez de picsum.photos, você troca "url" pelo caminho
+    real da imagem na pasta correspondente, por exemplo:
+    "fotos/artistico/01.jpg", "fotos/gestante/01.jpg" etc.
+    O nome da pasta em si vira o valor de "categoria".
+  */
+  const fotos = [
+    { url: "https://picsum.photos/id/1011/600/800", categoria: "artistico" },
+    { url: "https://picsum.photos/id/1027/600/450", categoria: "casal" },
+    { url: "https://picsum.photos/id/1005/600/900", categoria: "profissional" },
+    { url: "https://picsum.photos/id/1012/600/700", categoria: "gestante" },
+    { url: "https://picsum.photos/id/1013/600/500", categoria: "artistico" },
+    { url: "https://picsum.photos/id/1015/600/850", categoria: "casal" },
+    { url: "https://picsum.photos/id/1016/600/600", categoria: "profissional" },
+    { url: "https://picsum.photos/id/1018/600/950", categoria: "gestante" },
+    { url: "https://picsum.photos/id/1019/600/480", categoria: "artistico" },
+    { url: "https://picsum.photos/id/1021/600/700", categoria: "casal" },
+    { url: "https://picsum.photos/id/1024/600/820", categoria: "profissional" },
+    { url: "https://picsum.photos/id/1025/600/560", categoria: "gestante" },
+  ];
+
+  const nomes = {
+    artistico: "Artístico",
+    gestante: "Gestante",
+    casal: "Casal",
+    profissional: "Profissional"
+  };
+
+  const galeria = document.getElementById("galeria");
+  const contador = document.getElementById("contador");
+
+  function renderizar(){
+    galeria.innerHTML = "";
+    fotos.forEach(foto => {
+      const div = document.createElement("div");
+      div.className = "foto";
+      div.dataset.categoria = foto.categoria;
+      div.innerHTML = `
+        <img src="${foto.url}" alt="${nomes[foto.categoria]}" loading="lazy">
+        <span class="legenda">${nomes[foto.categoria]}</span>
+      `;
+      galeria.appendChild(div);
+    });
+  }
+
+  function filtrar(categoria){
+    const itens = document.querySelectorAll(".foto");
+    let visiveis = 0;
+    itens.forEach(item => {
+      const mostra = categoria === "todos" || item.dataset.categoria === categoria;
+      item.classList.toggle("escondida", !mostra);
+      if(mostra) visiveis++;
+    });
+    contador.textContent = `Mostrando ${visiveis} foto${visiveis !== 1 ? "s" : ""}`;
+  }
+
+  document.querySelectorAll(".filtros button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".filtros button").forEach(b => b.classList.remove("ativo"));
+      btn.classList.add("ativo");
+      filtrar(btn.dataset.filtro);
+    });
+  });
+
+  renderizar();
+</script>
+
+</body>
+</html>
