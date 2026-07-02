@@ -1,0 +1,20 @@
+Opção 1 — CMS via Git (Decap CMS)
+Como funciona no dia a dia dela: ela acessa seusite.com/admin, faz login, clica em "nova foto", escolhe a categoria num menu, arrasta o arquivo, clica em publicar.
+
+O que acontece por trás: isso gera um arquivo de "registro" da foto (tipo uma ficha) que fica salvo no GitHub, e o site é republicado automaticamente.
+Custo: R$ 0 (GitHub + Netlify/Vercel grátis pra esse volume de uso).
+Tempo de atualização: cerca de 30s a 2min depois que ela publica.
+Complexidade de montar: média — eu configuro tudo, ela só usa depois.
+Se ela quiser mexer sem internet boa ou tiver pressa (ex: publicar de última hora), pode sentir o delay.
+Bom pra: quem atualiza o portfólio de vez em quando (algumas fotos por semana/mês), não precisa de urgência.
+
+Opção 2 — Firebase/Supabase (upload instantâneo)
+Como funciona no dia a dia dela: mesma ideia de painel de admin com login, upload e categoria — mas a foto aparece no site na hora, sem esperar publicação.
+
+Custo: R$ 0 até um volume bem generoso de fotos/visitas (cobra só se o site bombar muito, o que é incomum pra portfólio pessoal).
+Tempo de atualização: instantâneo.
+Complexidade de montar: um pouco maior que a opção 1 (preciso criar conta no Firebase/Supabase, configurar o Storage e o banco), mas pra ela usar depois é igualmente simples.
+Bom pra: quem quer sensação de "site profissional", sem delays, podendo excluir/trocar foto e ver a mudança na hora.
+
+Resumindo a diferença real pra ela, no uso do dia a dia: as duas têm painel de admin simples, upload com escolha de categoria, e exclusão com um clique. A diferença é só velocidade de atualização e o quanto eu preciso configurar por trás. Pra maioria dos portfólios de fotógrafa, a diferença de 1-2 minutos de espera raramente importa.
+Minha recomendação: se ela não vai atualizar o site toda hora com urgência, a Opção 1 (CMS via Git) é a mais simples de manter no longo prazo e mais barata de manter estável. Se ela valoriza ver a mudança acontecer na hora, ou pretende atualizar bastante, vale ir de Firebase/Supabase.
