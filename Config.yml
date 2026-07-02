@@ -1,0 +1,46 @@
+# ── Backend: onde o CMS salva as alterações ──────────────────────────────
+# Opção mais simples pra quem não é dev: Netlify Identity + Git Gateway.
+# Você hospeda o site no Netlify, ativa "Identity" e "Git Gateway" no
+# painel do Netlify, e convida a fotógrafa por e-mail como usuária.
+# Ela loga em seusite.com/admin com e-mail e senha, sem precisar de conta no GitHub.
+backend:
+  name: git-gateway
+  branch: main
+ 
+# Alternativa: backend "github" direto, exige criar um OAuth App no GitHub.
+# Mais controle, mas configuração inicial um pouco mais técnica.
+# backend:
+#   name: github
+#   repo: seu-usuario/nome-do-repositorio
+#   branch: main
+ 
+# ── Onde as imagens enviadas são guardadas ───────────────────────────────
+media_folder: "imagens"
+public_folder: "/imagens"
+ 
+# ── O que aparece no painel pra fotógrafa editar ─────────────────────────
+collections:
+  - name: "galeria"
+    label: "Galeria de Fotos"
+    files:
+      - file: "content/fotos.json"
+        label: "Fotos do Portfólio"
+        name: "fotos"
+        fields:
+          - label: "Fotos"
+            name: "fotos"
+            widget: "list"
+            summary: "{{fields.categoria}}"
+            fields:
+              - label: "Imagem"
+                name: "imagem"
+                widget: "image"
+              - label: "Categoria"
+                name: "categoria"
+                widget: "select"
+                options:
+                  - { label: "Artístico", value: "artistico" }
+                  - { label: "Gestante", value: "gestante" }
+                  - { label: "Casal", value: "casal" }
+                  - { label: "Profissional", value: "profissional" }
+ 

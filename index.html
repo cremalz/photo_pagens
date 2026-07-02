@@ -157,9 +157,8 @@
 <body>
 
 <header>
-  <h1>Minha Princesa</h1>
-  <p>Fotografia — Feitas pela pessoa mais especial da minha vida</p>
-    <a>Fotografia — Feitas pela pessoa mais especial da minha vida</a>
+  <h1>Ana Ferreira</h1>
+  <p>Fotografia — São Paulo</p>
 </header>
 
 <nav class="filtros">
@@ -180,27 +179,11 @@
 
 <script>
   /*
-    Cada foto tem uma "pasta" (categoria) e uma url.
-    Na prática, em vez de picsum.photos, você troca "url" pelo caminho
-    real da imagem na pasta correspondente, por exemplo:
-    "fotos/artistico/01.jpg", "fotos/gestante/01.jpg" etc.
-    O nome da pasta em si vira o valor de "categoria".
+    As fotos não ficam mais escritas aqui no código. Elas moram em
+    content/fotos.json — arquivo que a fotógrafa edita através do painel
+    em /admin (upload de imagem + escolha da categoria num menu).
+    O site apenas busca esse arquivo e monta a galeria automaticamente.
   */
-  const fotos = [
-    { url: "https://picsum.photos/id/1011/600/800", categoria: "artistico" },
-    { url: "https://picsum.photos/id/1027/600/450", categoria: "casal" },
-    { url: "https://picsum.photos/id/1005/600/900", categoria: "profissional" },
-    { url: "https://picsum.photos/id/1012/600/700", categoria: "gestante" },
-    { url: "https://picsum.photos/id/1013/600/500", categoria: "artistico" },
-    { url: "https://picsum.photos/id/1015/600/850", categoria: "casal" },
-    { url: "https://picsum.photos/id/1016/600/600", categoria: "profissional" },
-    { url: "https://picsum.photos/id/1018/600/950", categoria: "gestante" },
-    { url: "https://picsum.photos/id/1019/600/480", categoria: "artistico" },
-    { url: "https://picsum.photos/id/1021/600/700", categoria: "casal" },
-    { url: "https://picsum.photos/id/1024/600/820", categoria: "profissional" },
-    { url: "https://picsum.photos/id/1025/600/560", categoria: "gestante" },
-  ];
-
   const nomes = {
     artistico: "Artístico",
     gestante: "Gestante",
@@ -210,6 +193,18 @@
 
   const galeria = document.getElementById("galeria");
   const contador = document.getElementById("contador");
+  let fotos = [];
+
+  async function carregarFotos(){
+    try{
+      const resposta = await fetch("content/fotos.json");
+      const dados = await resposta.json();
+      fotos = dados.fotos || [];
+    }catch(erro){
+      console.error("Não foi possível carregar content/fotos.json", erro);
+      fotos = [];
+    }
+  }
 
   function renderizar(){
     galeria.innerHTML = "";
@@ -218,11 +213,12 @@
       div.className = "foto";
       div.dataset.categoria = foto.categoria;
       div.innerHTML = `
-        <img src="${foto.url}" alt="${nomes[foto.categoria]}" loading="lazy">
+        <img src="${foto.imagem}" alt="${nomes[foto.categoria]}" loading="lazy">
         <span class="legenda">${nomes[foto.categoria]}</span>
       `;
       galeria.appendChild(div);
     });
+    contador.textContent = `Mostrando ${fotos.length} fotos`;
   }
 
   function filtrar(categoria){
@@ -244,7 +240,10 @@
     });
   });
 
-  renderizar();
+  (async function iniciar(){
+    await carregarFotos();
+    renderizar();
+  })();
 </script>
 
 </body>
