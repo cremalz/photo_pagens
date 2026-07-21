@@ -6,161 +6,15 @@
 <title>Minha princesa — Fotografia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg: #0B0B0A;
-    --ink: #F2EFE9;
-    --muted: #8A867E;
-    --accent: #C9A66B;
-    --line: rgba(242,239,233,0.12);
-  }
-
-  *{ box-sizing: border-box; margin:0; padding:0; }
-
-  body{
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'Inter', sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  header{
-    padding: 4rem 2rem 2rem;
-    text-align: center;
-    border-bottom: 1px solid var(--line);
-  }
-
-  header h1{
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 500;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    letter-spacing: 0.01em;
-  }
-
-  header p{
-    margin-top: 0.5rem;
-    color: var(--muted);
-    font-size: 0.95rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  /* barra de filtros */
-  .filtros{
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: var(--bg);
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    padding: 1.25rem 1rem;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .filtros button{
-    font-family: 'Inter', sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.03em;
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--muted);
-    padding: 0.5rem 1.1rem;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-  }
-
-  .filtros button:hover{
-    border-color: var(--accent);
-    color: var(--ink);
-  }
-
-  .filtros button.ativo{
-    background: var(--ink);
-    border-color: var(--ink);
-    color: var(--bg);
-  }
-
-  .contador{
-    text-align: center;
-    font-size: 0.8rem;
-    color: var(--muted);
-    padding: 0 0 1.5rem;
-    letter-spacing: 0.03em;
-  }
-
-  /* MASONRY: colunas CSS -> cada imagem mantem sua proporcao original,
-     o navegador organiza tudo sozinho, sem precisar cortar nenhuma foto */
-  .galeria{
-    column-count: 4;
-    column-gap: 14px;
-    padding: 0 20px 4rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  @media (max-width: 1100px){ .galeria{ column-count: 3; } }
-  @media (max-width: 720px){ .galeria{ column-count: 2; column-gap: 10px; padding: 0 12px 3rem; } }
-  @media (max-width: 460px){ .galeria{ column-count: 1; } }
-
-  .foto{
-    break-inside: avoid;
-    margin-bottom: 14px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 3px;
-    opacity: 1;
-    transform: scale(1);
-    transition: opacity 0.35s ease, transform 0.35s ease;
-  }
-
-  .foto.escondida{
-    display: none;
-  }
-
-  .foto img{
-    width: 100%;
-    height: auto;   /* <- é isso que faz a foto se auto-ajustar */
-    display: block;
-    transition: transform 0.5s ease;
-  }
-
-  .foto:hover img{
-    transform: scale(1.03);
-  }
-
-  .foto .legenda{
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    padding: 0.6rem 0.8rem;
-    background: linear-gradient(transparent, rgba(0,0,0,0.55));
-    color: #fff;
-    font-size: 0.75rem;
-    letter-spacing: 0.04em;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .foto:hover .legenda{ opacity: 1; }
-
-  footer{
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--muted);
-    font-size: 0.8rem;
-    border-top: 1px solid var(--line);
-  }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+ 
 <header>
-  <h1>Minha princesa</h1>
-  <p>Fotografia — São Paulo</p>
+  <h1 id="titulo-site">Minha princesa</h1>
+  <p id="subtitulo-site">Fotografia — São Paulo</p>
 </header>
-
+ 
 <nav class="filtros">
   <button class="ativo" data-filtro="todos">Todos</button>
   <button data-filtro="artistico">Artístico</button>
@@ -168,83 +22,17 @@
   <button data-filtro="casal">Casal</button>
   <button data-filtro="profissional">Profissional</button>
 </nav>
-
-<p class="contador" id="contador">Mostrando 12 fotos</p>
-
+ 
+<p class="contador" id="contador">Mostrando fotos...</p>
+ 
 <main class="galeria" id="galeria">
-  <!-- as fotos são inseridas via JavaScript a partir da lista "fotos" abaixo -->
+  <!-- as fotos são inseridas via JavaScript a partir de content/fotos.json -->
 </main>
-
-<footer>© 2026 Minha princesa Fotografia</footer>
-
-<script>
-  /*
-    As fotos não ficam mais escritas aqui no código. Elas moram em
-    content/fotos.json — arquivo que a fotógrafa edita através do painel
-    em /admin (upload de imagem + escolha da categoria num menu).
-    O site apenas busca esse arquivo e monta a galeria automaticamente.
-  */
-  const nomes = {
-    artistico: "Artístico",
-    gestante: "Gestante",
-    casal: "Casal",
-    profissional: "Profissional"
-  };
-
-  const galeria = document.getElementById("galeria");
-  const contador = document.getElementById("contador");
-  let fotos = [];
-
-  async function carregarFotos(){
-    try{
-      const resposta = await fetch("content/fotos.json");
-      const dados = await resposta.json();
-      fotos = dados.fotos || [];
-    }catch(erro){
-      console.error("Não foi possível carregar content/fotos.json", erro);
-      fotos = [];
-    }
-  }
-
-  function renderizar(){
-    galeria.innerHTML = "";
-    fotos.forEach(foto => {
-      const div = document.createElement("div");
-      div.className = "foto";
-      div.dataset.categoria = foto.categoria;
-      div.innerHTML = `
-        <img src="${foto.imagem}" alt="${nomes[foto.categoria]}" loading="lazy">
-        <span class="legenda">${nomes[foto.categoria]}</span>
-      `;
-      galeria.appendChild(div);
-    });
-    contador.textContent = `Mostrando ${fotos.length} fotos`;
-  }
-
-  function filtrar(categoria){
-    const itens = document.querySelectorAll(".foto");
-    let visiveis = 0;
-    itens.forEach(item => {
-      const mostra = categoria === "todos" || item.dataset.categoria === categoria;
-      item.classList.toggle("escondida", !mostra);
-      if(mostra) visiveis++;
-    });
-    contador.textContent = `Mostrando ${visiveis} foto${visiveis !== 1 ? "s" : ""}`;
-  }
-
-  document.querySelectorAll(".filtros button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".filtros button").forEach(b => b.classList.remove("ativo"));
-      btn.classList.add("ativo");
-      filtrar(btn.dataset.filtro);
-    });
-  });
-
-  (async function iniciar(){
-    await carregarFotos();
-    renderizar();
-  })();
-</script>
-
+ 
+<footer id="rodape-site">© 2026 Minha princesa Fotografia</footer>
+ 
+<script src="script.js"></script>
+ 
 </body>
 </html>
+ 

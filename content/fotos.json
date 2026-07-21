@@ -1,0 +1,64 @@
+{
+  "fotos": [
+    {
+      "imagem": "https://picsum.photos/id/1011/600/800",
+      "categoria": "artistico",
+      "legenda": ""
+    },
+    {
+      "imagem": "https://picsum.photos/id/1027/600/450",
+      "categoria": "casal",
+      "legenda": ""
+    },
+    {
+      "imagem": "https://picsum.photos/id/1005/600/900",
+      "categoria": "profissional",
+      "legenda": ""
+    },
+    {
+      "imagem": "https://picsum.photos/id/1012/600/700",
+      "categoria": "gestante",
+      "legenda": ""
+    },
+    {
+      "imagem": "https://picsum.photos/id/1013/600/500",
+      "categoria": "artistico",
+      "legenda": ""
+    },
+    {
+      "imagem": "https://picsum.photos/id/1015/600/850",
+      "categoria": "casal",
+      "legenda": ""
+    },
+    {
+      "imagem": "https://picsum.photos/id/1016/600/600",
+      "categoria": "profissional",
+      "legenda": ""
+    },
+    {
+      "imagem": "https://picsum.photos/id/1018/600/950",
+      "categoria": "gestante",
+      "legenda": ""
+    },
+    {
+      "imagem": "https://picsum.photos/id/1019/600/480",
+      "categoria": "artistico",
+      "legenda": ""
+    },
+    {
+      "imagem": "https://picsum.photos/id/1021/600/700",
+      "categoria": "casal",
+      "legenda": ""
+    },
+    {
+      "imagem": "https://picsum.photos/id/1024/600/820",
+      "categoria": "profissional",
+      "legenda": ""
+    },
+    {
+      "imagem": "https://picsum.photos/id/1025/600/560",
+      "categoria": "gestante",
+      "legenda": ""
+    }
+  ]
+}

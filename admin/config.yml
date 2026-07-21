@@ -1,0 +1,76 @@
+# ══════════════════════════════════════════════════════════════════════
+# BACKEND — onde o painel salva as alterações
+# ══════════════════════════════════════════════════════════════════════
+# Usamos o DecapBridge (gratuito): https://decapbridge.com
+# 1. Crie uma conta lá (pode logar com GitHub)
+# 2. "Create New Site" → conecte ao repositório deste projeto
+# 3. Copie os 3 valores que ele te dá e cole nos 3 campos abaixo:
+backend:
+  name: git-gateway
+  repo: SEU-USUARIO/SEU-REPOSITORIO
+  branch: main
+  identity_url: https://auth.decapbridge.com/sites/SEU-SITE-ID
+  gateway_url: https://gateway.decapbridge.com
+
+# Local, no seu computador, onde fica um "rascunho" de mídia antes do upload
+media_folder: "imagens"
+public_folder: "/imagens"
+
+# ══════════════════════════════════════════════════════════════════════
+# CONTEÚDO — o que aparece no painel pra edição
+# ══════════════════════════════════════════════════════════════════════
+collections:
+
+  # ── Aba 1: Textos gerais do site (título, subtítulo, rodapé) ──────────
+  - name: "configuracoes"
+    label: "🏠 Textos do Site"
+    files:
+      - file: "content/site.json"
+        label: "Título, subtítulo e rodapé"
+        name: "site"
+        fields:
+          - label: "Título principal"
+            name: "titulo"
+            widget: "string"
+            hint: "Aparece bem grande no topo do site"
+          - label: "Subtítulo"
+            name: "subtitulo"
+            widget: "string"
+            hint: "Aparece logo abaixo do título, ex: 'Fotografia — São Paulo'"
+          - label: "Texto do rodapé"
+            name: "rodape"
+            widget: "string"
+            hint: "Aparece no final da página"
+
+  # ── Aba 2: Galeria de fotos (upload, categoria, legenda, ordem) ───────
+  - name: "galeria"
+    label: "📷 Galeria de Fotos"
+    files:
+      - file: "content/fotos.json"
+        label: "Fotos do Portfólio"
+        name: "fotos"
+        fields:
+          - label: "Fotos"
+            name: "fotos"
+            widget: "list"
+            summary: "{{fields.categoria}} — {{fields.legenda}}"
+            hint: "Arraste os itens pela alcinha (⠿) à esquerda pra mudar a ordem em que aparecem no site. Clique em '+ Adicionar' pra incluir uma foto nova, ou no ✕ pra remover."
+            fields:
+              - label: "Foto"
+                name: "imagem"
+                widget: "image"
+                hint: "Clique aqui pra enviar ou trocar a imagem"
+              - label: "Categoria"
+                name: "categoria"
+                widget: "select"
+                hint: "Define em qual filtro essa foto vai aparecer"
+                options:
+                  - { label: "Artístico", value: "artistico" }
+                  - { label: "Gestante", value: "gestante" }
+                  - { label: "Casal", value: "casal" }
+                  - { label: "Profissional", value: "profissional" }
+              - label: "Legenda (opcional)"
+                name: "legenda"
+                widget: "string"
+                required: false
+                hint: "Texto que aparece quando o visitante passa o mouse sobre a foto. Se deixar em branco, mostra o nome da categoria."
