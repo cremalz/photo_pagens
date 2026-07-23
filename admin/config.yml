@@ -1,26 +1,41 @@
+ ══════════════════════════════════════════════════════════════════════
+# BACKEND — onde o painel salva as alterações (DecapBridge, modo PKCE)
 # ══════════════════════════════════════════════════════════════════════
-# BACKEND — onde o painel salva as alterações
-# ══════════════════════════════════════════════════════════════════════
-# Usamos o DecapBridge (gratuito): https://decapbridge.com
-# 1. Crie uma conta lá (pode logar com GitHub)
-# 2. "Create New Site" → conecte ao repositório deste projeto
-# 3. Copie os 3 valores que ele te dá e cole nos 3 campos abaixo:
 backend:
   name: git-gateway
-  repo: SEU-USUARIO/SEU-REPOSITORIO
+  repo: cremalz/photo_pagens
   branch: main
-  identity_url: https://auth.decapbridge.com/sites/SEU-SITE-ID
+  auth_type: pkce
+  base_url: https://auth.decapbridge.com
+  auth_endpoint: /sites/586e758e-ac43-4951-ac66-532d0325d7f2/pkce
+  auth_token_endpoint: /sites/586e758e-ac43-4951-ac66-532d0325d7f2/token
   gateway_url: https://gateway.decapbridge.com
-
+  commit_messages:
+    create: Create {{collection}} "{{slug}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    update: Update {{collection}} "{{slug}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    delete: Delete {{collection}} "{{slug}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    uploadMedia: Upload "{{path}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    deleteMedia: Delete "{{path}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    openAuthoring: Message {{message}} - {{author-name}} <{{author-login}}> via DecapBridge
+ 
+auth:
+  email_claim: email
+  first_name_claim: first_name
+  last_name_claim: last_name
+  avatar_url_claim: avatar_url
+ 
+logo_url: https://decapbridge.com/decapcms-with-bridge.svg
+site_url: https://photo-pagens.vercel.app
+ 
 # Local, no seu computador, onde fica um "rascunho" de mídia antes do upload
 media_folder: "imagens"
 public_folder: "/imagens"
-
+ 
 # ══════════════════════════════════════════════════════════════════════
 # CONTEÚDO — o que aparece no painel pra edição
 # ══════════════════════════════════════════════════════════════════════
 collections:
-
+ 
   # ── Aba 1: Textos gerais do site (título, subtítulo, rodapé) ──────────
   - name: "configuracoes"
     label: "🏠 Textos do Site"
@@ -41,7 +56,7 @@ collections:
             name: "rodape"
             widget: "string"
             hint: "Aparece no final da página"
-
+ 
   # ── Aba 2: Galeria de fotos (upload, categoria, legenda, ordem) ───────
   - name: "galeria"
     label: "📷 Galeria de Fotos"
