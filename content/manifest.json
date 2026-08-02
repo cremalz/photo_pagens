@@ -1,7 +1,7 @@
 {
   "destaque": [
-    "images/destaque/foto1.jpg",
-    "images/destaque/foto2.jpg"
+    "imagens/destaque/foto1.jpg",
+    "imagens/destaque/foto2.jpg"
   ],
   "artistico": ["imagens/artistico/1.jpg",
     "imagens/artistico/1 (1).jpg",
